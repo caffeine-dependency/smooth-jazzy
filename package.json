@@ -1,0 +1,37 @@
+{
+  "name": "arcteryx-nav-search",
+  "version": "",
+  "description": "Re-creates the nav and search bar components of the Arcteryx.com product detail page",
+  "author": "Erik Grubbs",
+  "license": "",
+  "main": "./navAndSearchBar/server/index.js",
+  "engines": {
+    "node": ">=6.13.0"
+  },
+  "scripts": {
+    "start": "nodemon",
+    "dataGen": "node ./dataGeneration/productGenerator.js",
+    "seed": "node ./navAndSearchBar/database/seed.js",
+    "build": "webpack -d --watch"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.3",
+    "morgan": "^1.9.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-icons": "^3.7.0",
+    "webpack": "^4.35.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.0",
+    "@babel/preset-env": "^7.5.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
+    "jest": "^24.8.0",
+    "webpack-cli": "^3.3.5"
+  }
+}
