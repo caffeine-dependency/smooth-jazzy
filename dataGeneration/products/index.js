@@ -3657,13 +3657,12 @@ const nameCatAndG = (originalName) => {
 
 
 let products = [];
-var iter = 1;
-var max = 15128;
+var iter = 10;
+var max = 760;
 var min = Math.ceil(max/iter);
 console.log('Min:', min);
 for (var g = 0; g < iter; g++) {
   for (var h = 0; h < min; h++) { // 15128 * 661 = 10M [15128, 7564, 3782]
-    console.log('Iteration:', h);
     for (var i = 0; i < mensProductNames.length; i++) {
       var product = Object.assign({}, nameCatAndG(mensProductNames[i]));
       product.image = mensProductUrls[i];
@@ -3690,7 +3689,8 @@ for (var g = 0; g < iter; g++) {
       products.push(product);
     }
   }
-  console.log(`(${min*661} records.  Max iterations: ${iter})\nStringifying products for products_${g+1}.json... `) // 1249951 records
+
+  // 1249951 records
   // var output = JSON.stringify({ products });
   var output = products;
   // setTimeout(()=> console.log(`Writing to file products_${g+1}.json...`), 1000);
@@ -3698,6 +3698,11 @@ for (var g = 0; g < iter; g++) {
   // delete output;
 }
 
+const v8 = require('v8');
+const totalHeapSize = v8.getHeapStatistics().total_available_size;
+let totalHeapSizaInMB = (totalHeapSize / 1024 / 1024).toFixed(2)
+console.log('totalHeapSize:', totalHeapSize);
+console.log("*V8 Total Heap Size", totalHeapSizaInMB, "MB");
 
 module.exports = products.map(product => ({
   name: product.name,
@@ -3711,9 +3716,4 @@ module.exports = products.map(product => ({
   activities: product.activities,
   materials: product.materials
 }))
-// const v8 = require('v8');
-// const totalHeapSize = v8.getHeapStatistics().total_available_size;
-// let totalHeapSizaInMB = (totalHeapSize / 1024 / 1024).toFixed(2)
-// console.log('totalHeapSize:', totalHeapSize);
-// console.log("V8 Total Heap Size", totalHeapSizaInMB, "MB");
 // node --max-old-space-size=1200000 productGenerator.js
