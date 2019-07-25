@@ -1,0 +1,28 @@
+# config:
+#   target: 'http://localhost:2001/api/search/5d38aec09e6b42b2623182a0'
+#   phases:
+#     - duration: 12
+#       arrivalRate: 10
+#   ws:
+#       # Set a custom subprotocol:
+#       # subprotocols:
+#       #   - json
+#       #   - soap
+# scenarios:
+#   - engine: "http"
+#     flow:
+#       - send: "5d38aec09e6b42b2623182a0"
+#     get:
+# #       - send: "5d38aec09e6b42b2623182a0"
+# # url: "/api/search/"
+
+config:
+  target: "http://127.0.0.1:2001"
+  phases:
+    - duration: 60
+      arrivalRate: 10000
+scenarios:
+    - engine: "http"
+      flow:
+      - get:
+          url: "/api/search/5d38aec09e6b42b2623182a0"     

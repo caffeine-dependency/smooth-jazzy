@@ -3716,4 +3716,6 @@ module.exports = products.map(product => ({
   activities: product.activities,
   materials: product.materials
 }))
+
+
 // node --max-old-space-size=1200000 productGenerator.js
