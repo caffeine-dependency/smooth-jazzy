@@ -18,11 +18,15 @@
 
 config:
   target: "http://127.0.0.1:2001"
+  http:
+    pool: 10 
   phases:
     - duration: 60
-      arrivalRate: 10000
+      arrivalRate: 3
 scenarios:
     - engine: "http"
       flow:
-      - get:
-          url: "/api/search/5d38aec09e6b42b2623182a0"     
+        - loop:
+          - get:
+              url: "/api/search/9999007"
+          count: 735
