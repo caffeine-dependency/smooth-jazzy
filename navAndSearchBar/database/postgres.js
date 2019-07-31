@@ -14,4 +14,7 @@ postgres.connect((err)=> {
   }
 });
 
+postgres.on('error', err => 
+console.log('OH SHIT!  Some error happenedz!', err.stack));
+
 module.exports = postgres;
