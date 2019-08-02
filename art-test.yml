@@ -29,5 +29,6 @@ scenarios:
         - loop:
           - get:
               url: "/api/search/9999007"
+              # url: "/test"
               followRedirect: false
-          count: 1165
+          count: 1500
