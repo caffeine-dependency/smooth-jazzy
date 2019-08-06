@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const path = "/Users/erikgrubbs/hackReactor/Arc/Erik-Modules" // local
+const path = "https://arcteryxsearchclone.s3-us-west-1.amazonaws.com" // local
 // https://arcteryxsearchclone.s3-us-west-1.amazonaws.com // s3
 
 
@@ -42,7 +42,6 @@ const mensProductNames = [
 "Gamma MX Jacket Men's",
 "Elaho Shirt LS Men's",
 "Cronin Pant Men's",
-"Index 15 Backpack",
 "Motus Crew Neck Shirt LS Men's",
 "Kyanite Hoody Men's",
 "Alpha FL Jacket Men's",
@@ -270,7 +269,6 @@ const mensProductNames = [
 "Lines T-Shirt Men's",
 "SL-340 Harness",
 "Phase AR Neck Gaiter",
-"Index Dopp Kit",
 "V110 Rolling Duffle",
 "Aerios FL Mid GTX Shoe Men's",
 "Kaslo Shirt SS Men's",
@@ -279,7 +277,6 @@ const mensProductNames = [
 "Rivet Glove",
 "Riel Shirt SS Men's",
 "FL-365 Harness Men's",
-"Index Large Toiletries Bag",
 "Calvus Visor",
 "Incendo SL Jacket Men's",
 "Waffle Toque",
@@ -392,7 +389,6 @@ const mensProductUrls = [
   path + "/Mens/Gamma-MX-Jacket-Hecate-Blue.jpeg",
   path + "/Mens/Elaho-Shirt-LS-Nocturne.jpeg",
   path + "/Mens/Cronin-Pant-Pilot.jpeg",
-  path + "/Mens/Index-15-Backpack-Robotica.jpeg",
   path + "/Mens/Motus-Crew-Neck-Shirt-LS-Robotica.jpeg",
   path + "/Mens/Kyanite-Hoody-Neurostorm.jpeg",
   path + "/Mens/Alpha-FL-Jacket-Robotica.jpeg",
@@ -620,7 +616,6 @@ const mensProductUrls = [
   path + "/Mens/Lines-T-Shirt-White.jpeg",
   path + "/Mens/SL-340-Harness-Pegasus-Flare.jpeg",
   path + "/Mens/Phase-AR-Neck-Gaiter-Black.jpeg",
-  path + "/Mens/Index-Dopp-Kit-Red-Beach.jpeg",
   path + "/Mens/V110-Rolling-Duffle-Black.jpeg",
   path + "/Mens/Aerios-FL-Mid-GTX-Shoe-Taan-Forest-Lampyres.jpeg",
   path + "/Mens/Kaslo-Shirt-SS-Sundara.jpeg",
@@ -629,7 +624,6 @@ const mensProductUrls = [
   path + "/Mens/Rivet-Glove-Black.jpeg",
   path + "/Mens/Riel-Shirt-SS-Yukon-Gold.jpeg",
   path + "/Mens/FL-365-Harness-Red-Beach-Flare.jpeg",
-  path + "/Mens/Index-Large-Toiletries-Bag-Red-Beach.jpeg",
   path + "/Mens/Calvus-Visor-White.jpeg",
   path + "/Mens/Incendo-SL-Jacket-Utopia.jpeg",
   path + "/Mens/Waffle-Toque-Nightshadow.jpeg",
@@ -2137,13 +2131,6 @@ const womensProductNames = [
   "Grotto Toque",
   "Haku Rope Bag",
   "Hexagonal Trucker Hat",
-  "Index 10",
-  "Index 10 + 10",
-  "Index 15 Backpack",
-  "Index 5",
-  "Index 5 + 5",
-  "Index Dopp Kit",
-  "Index Large Toiletries Bag",
   "Jelena Dress Women's",
   "Joni 3/4 Sleeve Top Women's",
   "Kadem Tank Women's",
@@ -2459,13 +2446,6 @@ const womensProductUrls = [
   path + "/Womens/Grotto-Toque-Zaffre-Baja.jpeg",
   path + "/Womens/Haku-Rope-Bag-Pilot-Flare.jpeg",
   path + "/Womens/Hexagonal-Trucker-Hat-Yukon.jpeg",
-  path + "/Womens/Index-5---5-Red-Beach.jpeg",
-  path + "/Womens/Index-5-Red-Beach.jpeg",
-  path + "/Womens/Index-10---10-Red-Beach.jpeg",
-  path + "/Womens/Index-10-Red-Beach.jpeg",
-  path + "/Womens/Index-15-Backpack-Robotica.jpeg",
-  path + "/Womens/Index-Dopp-Kit-Red-Beach.jpeg",
-  path + "/Womens/Index-Large-Toiletries-Bag-Red-Beach.jpeg",
   path + "/Womens/Jelena-Dress-W-Lynx.jpeg",
   path + "/Womens/Joni-3-4-Sleeve-Top-W-Fawn-Heather.jpeg",
   path + "/Womens/Kadem-Tank-W-Nightshadow.jpeg",
@@ -3594,10 +3574,14 @@ const colorGen = () => {
   var prodColors = [];
   var amount = Math.floor(Math.random() * Math.floor(3)) + 1;
   for (var i = 0; i < amount; i++) {
-    var newColor = colors[Math.floor(Math.random() * Math.floor(colors.length - 1))];
-    if (!prodColors.includes(newColor)) {
-      prodColors.push(newColor);
+    var randNum = Math.floor(Math.random() * Math.floor(colors.length - 1));
+    if (randNum < 0 || randNum >= 33) {
+      console.log(`${randNum}`);
     }
+    var newColor = colors[randNum];
+    if (!prodColors.includes(newColor) && newColor !== undefined) {
+      prodColors.push(newColor);
+    } 
   }
   return prodColors;
 }
@@ -3629,6 +3613,7 @@ const activityGen = () => {
 
 const nameCatAndGW = (originalName) => {
   var result = {};
+  console.log('*Original Name:', originalName);
   words = originalName.split(' ');
   if (words[words.length - 1] === "Women's") {
     result.gender = 'W';
@@ -3663,36 +3648,60 @@ const nameCatAndG = (originalName) => {
 
 
 let products = [];
+var iter = 10;
+var max = 350; // 760 === half a mil
+var min = Math.ceil(max/iter);
+// for (var g = 0; g < iter; g++) {
+//   for (var h = 0; h < min; h++) { // 15128 * 661 = 10M [15128, 7564, 3782]
+    mensProductNames.forEach((x, i) => {
+      var product = Object.assign({}, nameCatAndG(x));
+      product.image = mensProductUrls[i];
+      var price = mensProductPrices[i].split('.')[0];
+      product.price = "$" + price + " USD";
+      product.rating = Math.floor(ratings[i]);
+      product.numRatings = NumOfRatings[i];
+      product.colors = colorGen();
+      product.activities = activityGen();
+      product.materials = materialGen();
+      products.push(product);
 
-for (var i = 0; i < mensProductNames.length; i++) {
-  var product = Object.assign({}, nameCatAndG(mensProductNames[i]));
-  product.image = mensProductUrls[i];
-  var price = mensProductPrices[i].split('.')[0]; 
-  product.price = "$" + price + " USD";
-  product.rating = Math.floor(ratings[i]);
-  product.numRatings = NumOfRatings[i];
-  product.colors = colorGen();
-  product.activities = activityGen();
-  product.materials = materialGen();
-  products.push(product);
-}
+    })
+  
+
+    womensProductNames.forEach((x, i)=>{
+      var product = Object.assign({}, nameCatAndGW(x));
+      product.image = womensProductUrls[i];
+      var price = womensProductPrices[i].split('.')[0];
+      product.price = "$" + price + " USD";
+      product.rating = Math.floor(ratingsW[i]);
+      product.numRatings = NumOfRatingsW[i];
+      product.colors = colorGen();
+      product.activities = activityGen();
+      product.materials = materialGen();
+      products.push(product);
+    })
+    
+//   }
+// }
+
+const v8 = require('v8');
+const totalHeapSize = v8.getHeapStatistics().total_available_size;
+let totalHeapSizaInMB = (totalHeapSize / 1024 / 1024).toFixed(2)
+console.log('totalHeapSize:', totalHeapSize);
+console.log("*V8 Total Heap Size", totalHeapSizaInMB, "MB");
+
+module.exports = products.map(product => ({
+  name: product.name ? product.name : 'bad_name',
+  price: product.price,
+  category: product.category ? product.category : 'bad_category',
+  gender: product.gender ? product.gender : 'U',
+  image: product.image,
+  rating: product.rating,
+  numRatings: product.numRatings,
+  colors: product.colors,
+  activities: product.activities,
+  materials: product.materials
+}))
 
 
-
-for (var i = 0; i < womensProductNames.length; i++) {
-  var product = Object.assign({}, nameCatAndGW(womensProductNames[i]));
-  product.image = womensProductUrls[i];
-  var price = womensProductPrices[i].split('.')[0]; 
-  product.price = "$" + price + " USD";
-  product.rating = Math.floor(ratingsW[i]);
-  product.numRatings = NumOfRatingsW[i];
-  product.colors = colorGen();
-  product.activities = activityGen();
-  product.materials = materialGen();
-  products.push(product);
-}
-
-
-var output = JSON.stringify({ products });
-
-fs.writeFile('products.json', output, 'utf8', () => { console.log('saved') });
+// node --max-old-space-size=1200000 productGenerator.js

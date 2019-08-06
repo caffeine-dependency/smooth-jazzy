@@ -2,9 +2,12 @@ import axios from 'axios';
 import _ from 'lodash';
 
 const instantSearch = (query) => {
-  return axios.get(`/api/search?query=${query}`)
-    .then(({data}) => data)
-    .catch((err) => "error retrieving products")
+  if (query.length >= 3) {
+    console.log('running a search on:', query);
+    return axios.get(`/api/search?query=${query}`)
+      .then(({data}) => data)
+      .catch((err) => "error retrieving products")
+  }
 }
 
 // this doesn't work because of promises I believe

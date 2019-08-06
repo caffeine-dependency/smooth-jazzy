@@ -1,18 +1,26 @@
 const Product = require('./index.js');
 const fs = require ('fs');
 
-fs.readFile(__dirname + '/../../products.json', (err, data) => {
-  var products = JSON.parse(String(data)).products;
-  if (err) {
-    console.log("error reading products", err);
-    return;
-  }
+const config = {
+  database: {
+    name: 'search',
+  },
+  dropDatabase: true,
+};
 
-  for (var product of products) {
-     Product.create(product)
-       .then((result) => console.log(result))
-       .catch((err) => console.errpr(err));
-  }
+const seeder = new Seeder(config);
+const collections = seeder.readCollectionsFromPath(
+  path.resolve('./mydb/data-import'),
+  {
+    transformers: [Seeder.Transformers.replaceDocumentIdWithUnderscoreId],
+  },
+);
 
-});
-
+seeder
+  .import(collections)
+  .then(() => {
+    console.log('Success');
+  })
+  .catch(err => {
+    console.log('Error', err);
+  });
