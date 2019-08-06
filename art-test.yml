@@ -22,13 +22,13 @@ config:
     pool: 10 
   phases:
     - duration: 60
-      arrivalRate: 2
+      arrivalRate: 10
 scenarios:
     - engine: "http"
       flow:
         - loop:
           - get:
-              url: "/api/search/9999007"
+              url: "/api/search?query=hoody"
               # url: "/test"
               followRedirect: false
-          count: 1500
+          count: 250

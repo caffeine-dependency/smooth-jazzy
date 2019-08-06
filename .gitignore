@@ -1,2 +1,4 @@
 node_modules
 navAndSearchBar/database/credentials.js
+art-test.yml
+newrelic_agent.log
